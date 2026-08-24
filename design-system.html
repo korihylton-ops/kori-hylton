@@ -1,0 +1,642 @@
+<title>Tokyo Scrapbook — Design System</title>
+<style>
+  :root{
+    --paper:#F6EFDC;
+    --paper-line:rgba(43,36,16,.14);
+    --mustard:#E3B027;
+    --mustard-deep:#C6941A;
+    --olive-ink:#2B2410;
+    --tile-green:#6B9B45;
+    --tile-green-deep:#527236;
+    --signal-red:#D6402B;
+    --bubble-pink:#EFA7B2;
+    --display-font:'Arial Black','Helvetica Neue',Arial,sans-serif;
+    --body-font:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;
+    --mono-font:ui-monospace,'SFMono-Regular',Consolas,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{overflow-x:hidden}
+  body{
+    background:var(--mustard);
+    color:var(--olive-ink);
+    font-family:var(--body-font);
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+
+  .page{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+    padding:clamp(20px,5vw,64px) clamp(16px,5vw,48px) 40px;
+    background:
+      radial-gradient(circle, rgba(43,36,16,.07) 1px, transparent 1.3px) 0 0/7px 7px,
+      linear-gradient(160deg, var(--mustard) 0%, var(--mustard-deep) 100%);
+  }
+  .page::after{
+    content:"";
+    position:absolute;inset:0;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    opacity:.5;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .eyebrow{
+    font-family:var(--mono-font);
+    font-size:.7rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--olive-ink);
+    opacity:.72;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead{position:relative;padding-bottom:28px}
+  .scatter-row{
+    display:flex;
+    gap:10px;
+    margin:18px 0 10px;
+    flex-wrap:wrap;
+  }
+  .scatter-badge{
+    --r:0deg;
+    width:34px;height:34px;border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--display-font);
+    font-weight:900;
+    font-size:.95rem;
+    color:var(--olive-ink);
+    box-shadow:2px 3px 0 rgba(43,36,16,.25);
+    transform:rotate(var(--r));
+  }
+  .tile-word{
+    display:flex;
+    gap:clamp(4px,1.4vw,10px);
+    margin:4px 0 20px;
+    flex-wrap:wrap;
+  }
+  .tile{
+    --r:0deg;
+    width:clamp(46px,9vw,86px);
+    height:clamp(46px,9vw,86px);
+    border-radius:10px;
+    background:linear-gradient(160deg, var(--tile-green) 0%, var(--tile-green-deep) 100%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--display-font);
+    font-weight:900;
+    font-size:clamp(1.6rem,4.5vw,3rem);
+    color:var(--mustard);
+    text-shadow:2px 2px 0 rgba(43,36,16,.35);
+    box-shadow:3px 4px 0 rgba(43,36,16,.3);
+    transform:rotate(var(--r));
+    transition:transform .18s ease;
+  }
+  .tile:hover{transform:rotate(0deg) translateY(-3px)}
+  .masthead-copy{max-width:56ch}
+  .masthead-copy p{font-size:1rem;line-height:1.55;color:var(--olive-ink)}
+  .masthead-copy strong{font-weight:700}
+
+  /* ---------- Sections ---------- */
+  .section{margin-top:56px}
+  .section-head{
+    display:flex;align-items:baseline;gap:12px;
+    margin-bottom:22px;
+    border-bottom:2px solid var(--olive-ink);
+    padding-bottom:10px;
+  }
+  .section-tag{
+    font-family:var(--mono-font);
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    background:var(--olive-ink);
+    color:var(--paper);
+    padding:3px 9px;
+    border-radius:3px;
+  }
+  .section-head h2{
+    font-family:var(--body-font);
+    font-weight:700;
+    font-size:1.3rem;
+  }
+  .section-note{
+    font-size:.9rem;
+    color:var(--olive-ink);
+    opacity:.75;
+    max-width:62ch;
+    margin-bottom:20px;
+    line-height:1.5;
+  }
+
+  /* ---------- Color swatches (luggage tags) ---------- */
+  .swatches{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:22px 16px;
+  }
+  .tag{
+    --r:0deg;
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:4px;
+    padding:14px 12px 12px;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+    transform:rotate(var(--r));
+    transition:transform .18s ease;
+  }
+  .tag:hover{transform:rotate(0deg) translateY(-2px)}
+  .tag::before{
+    content:"";
+    position:absolute;top:8px;left:12px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--mustard);
+    box-shadow:inset 0 0 0 1px var(--paper-line);
+  }
+  .tag-swatch{height:44px;border-radius:3px;margin-bottom:10px}
+  .tag-name{font-family:var(--mono-font);font-size:.72rem;letter-spacing:.03em}
+  .tag-hex{font-family:var(--mono-font);font-size:.72rem;opacity:.6;margin-top:2px}
+  .tag-use{font-size:.78rem;margin-top:6px;line-height:1.4;opacity:.85}
+
+  /* ---------- Type specimens ---------- */
+  .type-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .type-card{
+    background:var(--paper);
+    border-radius:6px;
+    padding:22px 20px;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+  }
+  .type-role{font-family:var(--mono-font);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65;margin-bottom:10px}
+  .type-sample-display{font-family:var(--display-font);font-weight:900;font-size:2rem;letter-spacing:.01em;line-height:1.05}
+  .type-sample-body{font-family:var(--body-font);font-size:1.05rem;line-height:1.6;margin-top:4px}
+  .type-sample-mono{font-family:var(--mono-font);font-size:1rem;letter-spacing:.03em}
+  .type-usage{font-size:.78rem;opacity:.75;margin-top:12px;line-height:1.5}
+
+  /* ---------- Texture demo ---------- */
+  .texture-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .photo-block{
+    height:160px;border-radius:6px;
+    display:flex;align-items:flex-end;
+    padding:10px;
+    font-family:var(--mono-font);
+    font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .photo-flat{background:#9a9a90;color:#2b2410}
+  .photo-duotone{
+    position:relative;
+    color:var(--paper);
+    background:linear-gradient(150deg, var(--mustard) 0%, var(--olive-ink) 130%);
+    overflow:hidden;
+  }
+  .photo-duotone::after{
+    content:"";position:absolute;inset:0;
+    mix-blend-mode:overlay;opacity:.6;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n2'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n2)'/></svg>");
+  }
+  .photo-block span{position:relative;z-index:1}
+
+  /* ---------- Component shelf ---------- */
+  .shelf{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:34px 20px;
+  }
+  .shelf-item{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .shelf-item .label{font-family:var(--mono-font);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+  .shelf-stage{
+    width:100%;min-height:96px;
+    display:flex;align-items:center;justify-content:center;
+    padding:10px;
+  }
+
+  /* speech bubble */
+  .bubble{
+    --r:0deg;
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    border-radius:16px;
+    padding:12px 16px;
+    font-weight:700;
+    font-size:1rem;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+    transform:rotate(var(--r));
+  }
+  .bubble::after{
+    content:"";position:absolute;left:22px;bottom:-9px;
+    border-width:10px 8px 0 0;border-style:solid;
+    border-color:var(--paper) transparent transparent transparent;
+  }
+
+  /* sticky note */
+  .sticky{
+    --r:0deg;
+    width:150px;
+    background:
+      repeating-linear-gradient(var(--paper) 0 21px, var(--paper-line) 21px 22px);
+    background-color:var(--paper);
+    padding:14px 12px;
+    box-shadow:2px 4px 6px rgba(43,36,16,.25);
+    font-size:.82rem;line-height:22px;
+    transform:rotate(var(--r));
+  }
+
+  /* die-cut food stickers */
+  .sticker-row{display:flex;gap:10px}
+  .sticker{
+    --r:0deg;
+    width:52px;height:52px;border-radius:50%;
+    background:var(--paper);
+    border:3px solid var(--paper);
+    outline:1px solid var(--paper-line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;
+    box-shadow:2px 3px 0 rgba(43,36,16,.25);
+    transform:rotate(var(--r));
+  }
+
+  /* photo cutout placeholder */
+  .cutout{
+    --r:0deg;
+    width:96px;height:120px;
+    border-radius:48px 48px 20px 20px;
+    background:linear-gradient(160deg, var(--mustard) 0%, var(--olive-ink) 140%);
+    border:5px solid var(--paper);
+    box-shadow:3px 4px 0 rgba(43,36,16,.25);
+    transform:rotate(var(--r));
+  }
+
+  /* thumbnail stack */
+  .stack{display:flex}
+  .stack .thumb{
+    width:44px;height:44px;border-radius:50%;
+    border:3px solid var(--paper);
+    background:linear-gradient(160deg, var(--mustard) 0%, var(--olive-ink) 150%);
+    margin-left:-14px;
+  }
+  .stack .thumb:first-child{margin-left:0}
+
+  /* bookmark tag */
+  .ribbon{
+    width:46px;height:60px;
+    background:var(--signal-red);
+    color:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;
+    clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);
+  }
+
+  /* ticket stub */
+  .ticket{
+    width:100%;
+    background:var(--paper);
+    border-radius:6px;
+    padding:12px 14px;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+  }
+  .barcode{
+    height:26px;
+    background:repeating-linear-gradient(90deg, var(--olive-ink) 0 2px, transparent 2px 5px);
+    margin-bottom:6px;
+  }
+  .ticket-code{font-family:var(--mono-font);font-size:.72rem;letter-spacing:.04em;opacity:.8}
+
+  /* nav icon button */
+  .icon-btn{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--paper-line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+    cursor:pointer;
+  }
+
+  /* CTA button */
+  .cta-btn{
+    font-family:var(--body-font);
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    font-size:.85rem;
+    color:var(--paper);
+    background:var(--signal-red);
+    border:none;
+    border-radius:6px;
+    padding:12px 26px;
+    box-shadow:2px 3px 0 rgba(43,36,16,.35);
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .cta-btn:hover{transform:translateY(-2px)}
+  .cta-btn:active{transform:translateY(1px);box-shadow:1px 1px 0 rgba(43,36,16,.35)}
+
+  /* info card */
+  .info-card{
+    background:var(--paper);
+    border-radius:8px;
+    padding:16px 18px;
+    font-size:.85rem;
+    line-height:1.55;
+  }
+
+  /* status pill */
+  .status-pill{
+    display:inline-block;
+    background:rgba(43,36,16,.78);
+    color:var(--paper);
+    font-family:var(--mono-font);
+    font-size:.68rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:5px 10px;
+    border-radius:999px;
+  }
+
+  button:focus-visible,.icon-btn:focus-visible{
+    outline:2px dashed var(--olive-ink);
+    outline-offset:3px;
+  }
+
+  /* ---------- Motion demo ---------- */
+  .motion-demo{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .motion-hint{font-size:.85rem;opacity:.8;max-width:38ch;line-height:1.5}
+
+  /* ---------- Guidelines ---------- */
+  .guide-note{
+    background:var(--paper);
+    border-radius:6px;
+    padding:20px 22px;
+    box-shadow:2px 3px 0 rgba(43,36,16,.2);
+  }
+  .guide-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .guide-cols h3{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  .guide-cols ul{padding-left:1.1em;display:flex;flex-direction:column;gap:6px}
+  .guide-cols li{font-size:.85rem;line-height:1.5}
+
+  footer{
+    margin-top:60px;
+    padding-top:18px;
+    border-top:1px solid rgba(43,36,16,.3);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    font-family:var(--mono-font);
+    font-size:.7rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    opacity:.75;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .tile,.tag,.cta-btn{transition:none}
+  }
+  @media (max-width:520px){
+    .guide-cols{grid-template-columns:1fr}
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Design System · Specimen Sheet</div>
+    <div class="scatter-row">
+      <span class="scatter-badge" style="--r:-8deg">H</span>
+      <span class="scatter-badge" style="--r:5deg">E</span>
+      <span class="scatter-badge" style="--r:-4deg">L</span>
+      <span class="scatter-badge" style="--r:7deg">L</span>
+      <span class="scatter-badge" style="--r:-6deg">O</span>
+    </div>
+    <div class="tile-word">
+      <span class="tile" style="--r:-6deg">T</span>
+      <span class="tile" style="--r:4deg">O</span>
+      <span class="tile" style="--r:-3deg">K</span>
+      <span class="tile" style="--r:6deg">Y</span>
+      <span class="tile" style="--r:-5deg">O</span>
+    </div>
+    <div class="masthead-copy">
+      <p>Built from a single Y2K travel-diary screen — duotone Shibuya photography, scrabble-tile lettering, boarding-pass UI grammar. <strong>Six colors, three type roles, thirteen components.</strong> Loud collage on top, calm software underneath.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Color</span>
+      <h2>Six tokens, one loud accent</h2>
+    </div>
+    <p class="section-note">Mustard is the environment; olive-ink stands in for black everywhere. Red is rationed — it only appears on things you can press.</p>
+    <div class="swatches">
+      <div class="tag" style="--r:-3deg">
+        <div class="tag-swatch" style="background:var(--mustard)"></div>
+        <div class="tag-name">mustard</div>
+        <div class="tag-hex">#E3B027</div>
+        <div class="tag-use">Duotone wash, primary brand surface</div>
+      </div>
+      <div class="tag" style="--r:2deg">
+        <div class="tag-swatch" style="background:var(--mustard-deep)"></div>
+        <div class="tag-name">mustard-deep</div>
+        <div class="tag-hex">#C6941A</div>
+        <div class="tag-use">Gradient partner, pressed states</div>
+      </div>
+      <div class="tag" style="--r:-2deg">
+        <div class="tag-swatch" style="background:var(--olive-ink)"></div>
+        <div class="tag-name">olive-ink</div>
+        <div class="tag-hex">#2B2410</div>
+        <div class="tag-use">Text, line art, duotone shadow</div>
+      </div>
+      <div class="tag" style="--r:4deg">
+        <div class="tag-swatch" style="background:var(--paper)"></div>
+        <div class="tag-name">paper</div>
+        <div class="tag-hex">#F6EFDC</div>
+        <div class="tag-use">Structured-zone surfaces only</div>
+      </div>
+      <div class="tag" style="--r:-4deg">
+        <div class="tag-swatch" style="background:var(--tile-green)"></div>
+        <div class="tag-name">tile-green</div>
+        <div class="tag-hex">#6B9B45</div>
+        <div class="tag-use">Letter-tile backing</div>
+      </div>
+      <div class="tag" style="--r:3deg">
+        <div class="tag-swatch" style="background:var(--signal-red)"></div>
+        <div class="tag-name">signal-red</div>
+        <div class="tag-hex">#D6402B</div>
+        <div class="tag-use">CTAs only — one per screen</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Type</span>
+      <h2>Sticker font, page font, print font</h2>
+    </div>
+    <p class="section-note">The display face never leaves the tile component — it's a stamp, not a headline style. Body handles English and Japanese in the same stack.</p>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="type-role">Display — Arial Black stack</div>
+        <div class="type-sample-display">GO!</div>
+        <div class="type-usage">Tile letters and scatter badges only. One short word max.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-role">Body / UI — system + CJK stack</div>
+        <div class="type-sample-body">Tokyo has been Japan's capital since 1869. 今日から東京旅行、はじまり！</div>
+        <div class="type-usage">Running copy, cards, captions. English and Japanese share one line without a font swap.</div>
+      </div>
+      <div class="type-card">
+        <div class="type-role">Utility / mono</div>
+        <div class="type-sample-mono">SEAT 14A · GATE 22 · TK-04521</div>
+        <div class="type-usage">Ticket stubs, barcodes, anything meant to look printed, not designed.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Texture</span>
+      <h2>Duotone + grain, photography only</h2>
+    </div>
+    <p class="section-note">Flat UI surfaces stay clean — no grain, no wash. Texture is reserved for anything photographic.</p>
+    <div class="texture-row">
+      <div class="photo-block photo-flat"><span>raw photo placeholder</span></div>
+      <div class="photo-block photo-duotone"><span>duotone-mustard + grain applied</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Components</span>
+      <h2>The shelf</h2>
+    </div>
+    <p class="section-note">Everything below is pinned, not positioned — each rotation is a fixed value, not randomized. Hover anything to see it lift.</p>
+    <div class="shelf">
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><div class="bubble" style="--r:-3deg">すごい！</div></div>
+        <div class="label">Speech Bubble</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><div class="sticky" style="--r:4deg">今日から東京旅行、はじまり！</div></div>
+        <div class="label">Sticky Note</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage">
+          <div class="sticker-row">
+            <div class="sticker" style="--r:-8deg">🍜</div>
+            <div class="sticker" style="--r:6deg">🍙</div>
+            <div class="sticker" style="--r:-4deg">🍡</div>
+          </div>
+        </div>
+        <div class="label">Die-cut Sticker</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><div class="cutout" style="--r:-4deg"></div></div>
+        <div class="label">Photo / Character Cutout</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><div class="stack"><div class="thumb"></div><div class="thumb"></div><div class="thumb"></div></div></div>
+        <div class="label">Thumbnail Stack</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><div class="ribbon">♥</div></div>
+        <div class="label">Bookmark Tag</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage">
+          <div class="ticket">
+            <div class="barcode"></div>
+            <div class="ticket-code">TK-04521 · NRT</div>
+          </div>
+        </div>
+        <div class="label">Ticket Stub</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><button class="icon-btn" aria-label="Back">←</button></div>
+        <div class="label">Nav Icon Button</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><button class="cta-btn">Start</button></div>
+        <div class="label">CTA Button</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage">
+          <div class="info-card">Tokyo has been the capital of Japan since 1869 and is one of the most populous metropolitan areas in the world.</div>
+        </div>
+        <div class="label">Info Card</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage"><span class="status-pill">AI Modified</span></div>
+        <div class="label">Status Pill</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage">
+          <div class="scatter-badge" style="--r:-6deg;width:40px;height:40px;font-size:1.05rem">!</div>
+        </div>
+        <div class="label">Scatter Badge</div>
+      </div>
+
+      <div class="shelf-item">
+        <div class="shelf-stage">
+          <div class="tile" style="--r:-5deg;width:56px;height:56px;font-size:1.6rem">貼</div>
+        </div>
+        <div class="label">Tile Letter</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Motion</span>
+      <h2>Pick it up off the page</h2>
+    </div>
+    <div class="motion-demo">
+      <div class="tile" style="--r:-6deg">↥</div>
+      <p class="motion-hint">Hover or focus any collage element: it straightens toward 0° and lifts 2–4px. Structured-zone components (buttons, cards) never rotate — only a small press/lift on interaction. Reduced-motion users get the shadow change without the transform.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="section-tag">Guidelines</span>
+      <h2>Do / don't</h2>
+    </div>
+    <div class="guide-note">
+      <div class="guide-cols">
+        <div>
+          <h3>Do</h3>
+          <ul>
+            <li>Keep signal-red exclusive to one action per screen</li>
+            <li>Apply the white die-cut outline to every pasted photo or illustration</li>
+            <li>Keep the structured zone calm — no grain, no rotation, no tile lettering</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Don't</h3>
+          <ul>
+            <li>Use tile lettering in running text or navigation</li>
+            <li>Spread bubble-pink across large surfaces</li>
+            <li>Randomize rotation at runtime — hand-set it per instance</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Tokyo Scrapbook — Design System</span>
+    <span>See DESIGN.md for full spec</span>
+  </footer>
+
+</div>
